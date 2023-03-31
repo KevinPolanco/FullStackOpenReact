@@ -6,9 +6,18 @@ const Button = ({ handleClick, text }) => {
 };
 
 const Statistics = ({ good, neutral, bad }) => {
+  if (good + neutral + bad === 0) {
+    return (
+      <>
+        <h2>Statistics </h2>
+        <p>No feedback given</p>
+      </>
+    );
+  }
+
   return (
     <>
-      <h2>statistics </h2>
+      <h2>Statistics </h2>
       <p>good {good}</p>
       <p>nuetral {neutral}</p>
       <p>bad {bad}</p>
@@ -27,8 +36,8 @@ const App = () => {
 
   return (
     <div>
-      <h2>give feedback</h2>
-      
+      <h2>Give feedback</h2>
+
       <Button handleClick={() => setGood(good + 1)} text="good" />
       <Button handleClick={() => setNeutral(neutral + 1)} text="neutral" />
       <Button handleClick={() => setBad(bad + 1)} text="bad" />
