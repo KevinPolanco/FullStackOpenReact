@@ -37,13 +37,25 @@ const Header = ({ header }) => {
   );
 };
 
-const Course = (props) => {
+const Course = ({course}) => {
   return (
     <>
-      <Header header={props.course.name} />
-      <Content content={props.course.parts} />
+      <Header header={course.name} />
+      <Content content={course.parts} />
     </>
   );
 };
 
-export default Course;
+const Courses = ({courses}) => {
+  return (
+    <>
+      {courses.map((course) => (
+          <Course key={course.id} course={course}/>
+        )
+      )}
+    </>
+  );
+};
+
+export default Courses;
+
