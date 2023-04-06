@@ -1,4 +1,4 @@
-const Numbers = ( {persons, newFilter} ) => {
+const Persons  = ( {persons, newFilter} ) => {
     const filterPersons = persons.filter(person => person.name.toLowerCase().includes(newFilter))
    
     if(newFilter !== '' & filterPersons.length !== 0){
@@ -17,4 +17,4 @@ const Numbers = ( {persons, newFilter} ) => {
     )     
 }
 
-export default Numbers
+export default Persons 

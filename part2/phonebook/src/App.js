@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import Numbers from './components/Numbers'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons  from './components/Persons '
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -9,8 +11,8 @@ const App = () => {
     { name: 'Dan Abramov', number: 53889632, id: 4 },
   ]) 
 
-  const [ newName, setNewName ] = useState('new name')
-  const [ newNumber, setNewNumber ] = useState('new number')
+  const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
 
   const addNumber = (event) => {
@@ -19,6 +21,8 @@ const App = () => {
     const allName = persons.map(peroson => peroson.name)
     const includesName = allName.includes(newName)
 
+    if(!newName) return alert(`name missing`)
+    if(!newNumber) return alert(`number missing`)
     if(includesName) return alert(`${newName}  is already added to phonebook`)
     if(newNumber.length < 8) return alert(`the number must be 8 digits`)
 
@@ -46,18 +50,19 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>filter shown with<input onChange={handleFilterChange}/></div>
-
-      <h2>add a new</h2>
-      <form onSubmit={addNumber}>
-        <div>name: <input value={newName}  onChange={handleNameChange}/></div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <Numbers persons={persons} newFilter={newFilter}/>
+      <Filter handleFilterChange={handleFilterChange}/>
+      
+      <h3>add a new person</h3>
+      <PersonForm 
+        addNumber={addNumber}
+        newName={newName}
+        handleNameChange={handleNameChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+      />
+    
+      <h3>Numbers</h3>
+      <Persons persons={persons} newFilter={newFilter}/>
     </div>
     
   )
