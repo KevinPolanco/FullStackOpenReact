@@ -5,7 +5,7 @@ const Languages = ({languages}) => {
     for (const key in languages) {
         allLanguages.push(languages[key])
     }
-    console.log(allLanguages)
+
     return (
         <>
             <h3>Languages</h3>

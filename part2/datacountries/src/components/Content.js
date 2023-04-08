@@ -1,6 +1,7 @@
 import Languages from "./Languages"
+import Button from "./Button"
 
-const Content = ({ filterCountres }) => {
+const Content = ({ filterCountres, handleButtonClick }) => {
     
     if(filterCountres.length > 10){
         return (
@@ -14,7 +15,10 @@ const Content = ({ filterCountres }) => {
         return (
             <>
                 {filterCountres.map(country => (
-                    <p>{country.name.common}</p>
+                    <>
+                        <p>{country.name.common}</p>
+                        <Button className={country.name.common} onClick={handleButtonClick} text='show'/>
+                    </> 
                 ))}
             </>
         )  

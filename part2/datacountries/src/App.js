@@ -19,13 +19,18 @@ const App = () =>{
     setFindCountries(event.target.value.trim().toLowerCase())
   }
 
-  //  console.log(findCountries)
-  const filterCountres = countries.filter( country => country.name.common.toLowerCase().includes(findCountries) )
+  const handleButtonClick = (event) => {
+      console.log('click')
+      const newFind = event.target.className
+      setFindCountries(newFind.toLowerCase())
+  }
+
+  let filterCountres = countries.filter( country => country.name.common.toLowerCase().includes(findCountries) )
   
   return (
     <div>
       <FindCountries handleFilterChange={handleFilterChange} />
-      <Content filterCountres={filterCountres}/>
+      <Content handleButtonClick={handleButtonClick} filterCountres={filterCountres}/>
     </div>
   );
 }
