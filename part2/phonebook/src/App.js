@@ -19,18 +19,38 @@ const App = () => {
   const addNumber = (event) => {
     event.preventDefault();
 
-    const allName = persons.map((peroson) => peroson.name);
+    const allName = persons.map((person) => person.name);
     const includesName = allName.includes(newName);
 
     if (!newName) return alert(`name missing`);
     if (!newNumber) return alert(`number missing`);
-    if (includesName) return alert(`${newName}  is already added to phonebook`);
     if (newNumber.length < 8) return alert(`the number must be 8 digits`);
 
     const personObject = {
       name: newName,
       number: newNumber,
     };
+   
+    if (includesName) {
+      const person = persons.find((person) => person.name === newName);
+      const id = person.id;
+      if (
+        window.confirm(
+          `${person.name} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        personService.update(id, personObject).then((returnedPersons) => {
+          setPersons(
+            persons.map((person) =>
+              person.id !== id ? person : returnedPersons
+            )
+          );
+          setNewName("");
+          setNewNumber("");
+        });
+      }
+      return;
+    }
 
     personService.create(personObject).then((returnedPersons) => {
       setPersons(persons.concat(returnedPersons));
