@@ -3,12 +3,15 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import personService from "./services/persons";
+import Notification from "./components/Notification";
+import "./index.css";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -30,7 +33,7 @@ const App = () => {
       name: newName,
       number: newNumber,
     };
-   
+
     if (includesName) {
       const person = persons.find((person) => person.name === newName);
       const id = person.id;
@@ -40,6 +43,10 @@ const App = () => {
         )
       ) {
         personService.update(id, personObject).then((returnedPersons) => {
+          setMessage(`you have changed ${returnedPersons.name}'s number `);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
           setPersons(
             persons.map((person) =>
               person.id !== id ? person : returnedPersons
@@ -53,6 +60,10 @@ const App = () => {
     }
 
     personService.create(personObject).then((returnedPersons) => {
+      setMessage(`Added ${returnedPersons.name}`);
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
       setPersons(persons.concat(returnedPersons));
       setNewName("");
       setNewNumber("");
@@ -66,7 +77,18 @@ const App = () => {
     if (window.confirm(`Delete ${person.name}?`)) {
       personService
         .erase(id)
-        .then(setPersons(persons.filter((person) => person.id !== id)));
+        .then(setPersons(persons.filter((person) => person.id !== id)))
+        .catch(error => {
+          if (error) {
+            setMessage({
+              error: error.response.statusText,
+              person,
+            });
+            setTimeout(() => {
+              setMessage(null);
+            }, 5000);
+          }
+        })
     }
   };
 
@@ -83,6 +105,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter handleFilterChange={handleFilterChange} />
 
       <h3>add a new person</h3>
