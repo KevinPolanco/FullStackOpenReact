@@ -26,9 +26,9 @@ let persons = [
   },
 ];
 
-const getRandomInt = ()  => {
-    return Math.floor(Math.random() * 1000000000);
-}
+const getRandomInt = () => {
+  return Math.floor(Math.random() * 1000000000);
+};
 
 app.get("/", (request, response) => {
   response.send("<h1>Hello World!</h1>");
@@ -75,17 +75,32 @@ app.delete("/api/persons/:id", (request, response) => {
 app.post("/api/persons", (request, response) => {
   const body = request.body;
 
-  if (!(body.name && body.number)) {
+  if (!body.name) {
     return response.status(400).json({
-      error: "content missing",
+      error: "name missing",
+    });
+  }
+
+  if (!body.number) {
+    return response.status(400).json({
+      error: "number missing",
+    });
+  }
+
+  const names = persons.map((person) => person.name);
+  const nameIncludes = names.includes(body.name);
+  
+  if (nameIncludes) {
+    return response.status(400).json({
+      error: "name must be unique",
     });
   }
 
   const person = {
     name: body.name,
     number: body.number,
-    id: getRandomInt()
-  }
+    id: getRandomInt(),
+  };
 
   response.json(person);
 });
