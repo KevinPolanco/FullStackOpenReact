@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 let persons = [
   {
     name: "Arto Hellas",
@@ -23,6 +25,10 @@ let persons = [
     id: 4,
   },
 ];
+
+const getRandomInt = ()  => {
+    return Math.floor(Math.random() * 1000000000);
+}
 
 app.get("/", (request, response) => {
   response.send("<h1>Hello World!</h1>");
@@ -63,8 +69,25 @@ app.delete("/api/persons/:id", (request, response) => {
   const person = persons.find((person) => person.id === id);
   if (!person) response.status(404).end();
   persons = persons.filter((person) => person.id !== id);
-  console.log(persons)
   response.status(204).end();
+});
+
+app.post("/api/persons", (request, response) => {
+  const body = request.body;
+
+  if (!(body.name && body.number)) {
+    return response.status(400).json({
+      error: "content missing",
+    });
+  }
+
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: getRandomInt()
+  }
+
+  response.json(person);
 });
 
 const PORT = 3001;
