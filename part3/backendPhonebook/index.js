@@ -29,14 +29,19 @@ app.get("/", (request, response) => {
 });
 
 app.get("/info", (request, response) => {
-    const date = new Date();
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const dateString = date.toLocaleString('en-US', {
-    timeZone,
-    timeZoneName: 'short'
-    }).replace(/,/g, '') + ' ' + date.toString().match(/\(([^)]+)\)/)[1];
-  
-    response.send(`
+  const date = new Date();
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const dateString =
+    date
+      .toLocaleString("en-US", {
+        timeZone,
+        timeZoneName: "short",
+      })
+      .replace(/,/g, "") +
+    " " +
+    date.toString().match(/\(([^)]+)\)/)[1];
+
+  response.send(`
         <p>Phonebook has info for ${persons.length} people</p>
         <p>${dateString}</p>
     `);
@@ -44,6 +49,13 @@ app.get("/info", (request, response) => {
 
 app.get("/api/persons", (request, response) => {
   response.json(persons);
+});
+
+app.get("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id)
+  const person = persons.find(person => person.id === id)
+  if (person) response.json(person)
+  else response.status(404).end()
 });
 
 const PORT = 3001;
