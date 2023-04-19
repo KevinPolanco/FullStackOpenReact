@@ -99,7 +99,7 @@ const App = () => {
     setNewNumber(event.target.value);
   };
   const handleFilterChange = (event) => {
-    setNewFilter(event.target.value.trim());
+    setNewFilter(event.target.value.trim().toLowerCase());
   };
 
   return (
