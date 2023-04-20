@@ -1,1 +1,1 @@
-https://backend-phonebook.herokuapp.com/api/persons/
+https://backend-phonebook.herokuapp.com/

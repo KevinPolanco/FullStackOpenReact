@@ -5,6 +5,7 @@ const cors = require('cors')
 
 app.use(express.json());
 app.use(cors())
+app.use(express.static('build'))
 
 app.use(morgan('tiny'))
 morgan.token('body', (request) => JSON.stringify(request.body))
@@ -35,10 +36,6 @@ let persons = [
 const getRandomInt = () => {
   return Math.floor(Math.random() * 1000000000);
 };
-
-app.get("/", (request, response) => {
-  response.send("<h1>Hello World!</h1>");
-});
 
 app.get("/info", (request, response) => {
   const date = new Date();
