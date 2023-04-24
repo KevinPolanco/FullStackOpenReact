@@ -20,7 +20,7 @@ const personSchema = new mongoose.Schema({
   number: String,
 });
 
-const Person = mongoose.model("Persons", personSchema);
+const Person = mongoose.model("Person", personSchema);
 
 if (name === undefined) {
   Person.find({}).then((result) => {
