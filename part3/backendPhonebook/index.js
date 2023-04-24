@@ -1,16 +1,16 @@
-require('dotenv').config()
+require("dotenv").config();
 const express = require("express");
 const app = express();
-var morgan = require('morgan')
-const cors = require('cors')
-const Person = require('./models/person')
+var morgan = require("morgan");
+const cors = require("cors");
+const Person = require("./models/person");
 
 app.use(express.json());
-app.use(cors())
-app.use(express.static('build'))
+app.use(cors());
+app.use(express.static("build"));
 
-app.use(morgan('tiny'))
-morgan.token('body', (request) => JSON.stringify(request.body))
+app.use(morgan("tiny"));
+morgan.token("body", (request) => JSON.stringify(request.body));
 
 // let persons = [
 //   {
@@ -58,11 +58,11 @@ app.get("/info", (request, response) => {
     `);
 });
 
-app.get('/api/persons', (request, response) => {
-  Person.find({}).then(notes => {
-    response.json(notes)
-  })
-})
+app.get("/api/persons", (request, response) => {
+  Person.find({}).then((notes) => {
+    response.json(notes);
+  });
+});
 
 app.get("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
@@ -79,40 +79,41 @@ app.delete("/api/persons/:id", (request, response) => {
   response.status(204).end();
 });
 
-app.post("/api/persons", morgan(':body'), (request, response) => {
+app.post("/api/persons", morgan(":body"), (request, response) => {
   const body = request.body;
 
-  if (!body.name) {
+  if (body.name === undefined) {
     return response.status(400).json({
       error: "name missing",
     });
   }
 
-  if (!body.number) {
+  if (body.number === undefined) {
     return response.status(400).json({
       error: "number missing",
     });
   }
 
-  const names = persons.map((person) => person.name);
-  const nameIncludes = names.includes(body.name);
-  
-  if (nameIncludes) {
-    return response.status(400).json({
-      error: "name must be unique",
-    });
-  }
+  // const names = persons.map((person) => person.name);
+  // const nameIncludes = names.includes(body.name);
 
-  const person = {
+  // if (nameIncludes) {
+  //   return response.status(400).json({
+  //     error: "name must be unique",
+  //   });
+  // }
+
+  const person = new Person({
     name: body.name,
     number: body.number,
-    id: getRandomInt(),
-  };
+  });
 
-  response.json(person);
+  person.save().then((savedPerson) => {
+    response.json(savedPerson);
+  });
 });
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
