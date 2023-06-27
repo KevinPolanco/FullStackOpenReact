@@ -71,7 +71,8 @@ const App = () => {
   };
 
   const deleteNumber = (event) => {
-    const id = parseInt(event.target.id);
+    const id = event.target.id;
+    console.log(id)
     const person = persons.find((person) => person.id === id);
 
     if (window.confirm(`Delete ${person.name}?`)) {
