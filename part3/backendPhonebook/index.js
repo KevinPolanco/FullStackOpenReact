@@ -114,6 +114,21 @@ app.post("/api/persons", morgan(":body"), (request, response) => {
   });
 });
 
+app.put('/api/persons/:id' , (request, response, next) => {
+  const body = request.body
+
+  const person = {
+    name: body.name,
+    number: body.number,
+  }
+
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
+    .then(updatePerson => {
+      response.json(updatePerson)
+    })
+    .catch(error => next(error))
+})
+
 ////////////////////////////////////////////////////////////
 
 const unknownEndpoint = (request, response) => {
