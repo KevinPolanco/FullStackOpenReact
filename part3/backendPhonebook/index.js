@@ -7,7 +7,7 @@ const Person = require("./models/person");
 
 app.use(express.json());
 app.use(cors());
-app.use(express.static("build"));
+// app.use(express.static("build"));
 
 app.use(morgan("tiny"));
 morgan.token("body", (request) => JSON.stringify(request.body));
@@ -38,6 +38,10 @@ morgan.token("body", (request) => JSON.stringify(request.body));
 const getRandomInt = () => {
   return Math.floor(Math.random() * 1000000000);
 };
+
+app.get("/", (request, response) => {
+  response.json("Hello")
+})
 
 app.get("/info", (request, response) => {
   const date = new Date();
@@ -153,7 +157,7 @@ const errorHandler = (error, request, response, next) => {
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
