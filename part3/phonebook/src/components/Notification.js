@@ -34,6 +34,14 @@ const Notification = ({ message }) => {
     );
   }
 
+  if (message.error) {
+    return (
+      <div style={errorStyle}>
+       {message.error}
+      </div>
+    );
+  }
+  console.log(message)
   return <div style={messageStyle}>{message}</div>;
 };
 

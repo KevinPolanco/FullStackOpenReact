@@ -19,16 +19,30 @@ const App = () => {
     });
   }, []);
 
+  const notificationMessage = (isError, text) => {
+    if (isError === true) {
+      setMessage({error: text});
+    } else {
+      setMessage(text);
+    }
+    setTimeout(() => {
+        setMessage(null);
+      }, 5000);
+  }
+
   const addNumber = (event) => {
     event.preventDefault();
 
     const allName = persons.map((person) => person.name);
     const includesName = allName.includes(newName);
 
-    if (!newName) return alert(`name missing`);
-    if (!newNumber) return alert(`number missing`);
-    if (newNumber.length < 8) return alert(`the number must be 8 digits`);
-
+    if (!newName) return notificationMessage(true, `name missing`);
+    if (newName.length < 3) return notificationMessage(true,`the name must have a minimum of 3 characters`);
+    if (!newNumber) return notificationMessage(true,`number missing`);
+    if (newNumber.length < 8) return notificationMessage(true,`the number must be 8 digits`);
+    var regex = /\d/;
+    if (regex.test(newName)) return notificationMessage(true, 'name must contain only letters')// true
+    
     const personObject = {
       name: newName,
       number: newNumber,
@@ -43,10 +57,7 @@ const App = () => {
         )
       ) {
         personService.update(id, personObject).then((returnedPersons) => {
-          setMessage(`you have changed ${returnedPersons.name}'s number `);
-          setTimeout(() => {
-            setMessage(null);
-          }, 5000);
+          notificationMessage(false, `you have changed ${returnedPersons.name}'s number `);
           setPersons(
             persons.map((person) =>
               person.id !== id ? person : returnedPersons
@@ -59,20 +70,22 @@ const App = () => {
       return;
     }
 
-    personService.create(personObject).then((returnedPersons) => {
-      setMessage(`Added ${returnedPersons.name}`);
-      setTimeout(() => {
-        setMessage(null);
-      }, 5000);
-      setPersons(persons.concat(returnedPersons));
-      setNewName("");
-      setNewNumber("");
-    });
+    personService.create(personObject)
+      .then((returnedPersons) => {
+        notificationMessage(false, `Added ${returnedPersons.name}`);
+        setPersons(persons.concat(returnedPersons));
+        setNewName("");
+        setNewNumber("");
+      })
+      .catch(error => {
+        if (error) {
+          notificationMessage(true, error.response.data.error)
+        }
+      })
   };
 
   const deleteNumber = (event) => {
     const id = event.target.id;
-    console.log(id)
     const person = persons.find((person) => person.id === id);
 
     if (window.confirm(`Delete ${person.name}?`)) {
@@ -80,6 +93,7 @@ const App = () => {
         .erase(id)
         .then(setPersons(persons.filter((person) => person.id !== id)))
         .catch(error => {
+          console.log(error)
           if (error) {
             setMessage({
               error: error.response.statusText,
