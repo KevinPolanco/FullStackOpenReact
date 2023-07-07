@@ -91,7 +91,10 @@ const App = () => {
     if (window.confirm(`Delete ${person.name}?`)) {
       personService
         .erase(id)
-        .then(setPersons(persons.filter((person) => person.id !== id)))
+        .then((returnedPersons) => {
+          notificationMessage(false, `${returnedPersons.name} has been deleted`);
+          setPersons(persons.filter((person) => person.id !== id))
+        })
         .catch(error => {
           console.log(error)
           if (error) {
