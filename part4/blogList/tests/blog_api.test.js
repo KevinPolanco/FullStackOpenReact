@@ -35,6 +35,29 @@ test("all blogs must have an id property", async () => {
   });
 });
 
+test("you can add a valid blog" , async () => {
+  const newBlog = {
+    title: "the importance of async/await in javascript",
+    author: "Albert Asynchronous",
+    url: "http://blog.asynchronous.com",
+    likes: 60,
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const blogsAtEnd = await helper.blogsInDb();
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
+
+  const titles = blogsAtEnd.map(r => r.title);
+  expect(titles).toContain(
+    "the importance of async/await in javascript"
+  );
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
