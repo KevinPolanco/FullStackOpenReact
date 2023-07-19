@@ -28,7 +28,7 @@ const initialBlogs = [
     title: "Type wars",
     author: "Robert C. Martin",
     likes: 2,
-  }  
+  },
 ];
 
 
