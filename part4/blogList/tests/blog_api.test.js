@@ -58,6 +58,24 @@ test("you can add a valid blog" , async () => {
   );
 });
 
+
+test("If the like property does not exist, it will be 0 by default", async () => {
+  const newBlog = {
+    title: "the importance of async/await in javascript",
+    author: "Albert Asynchronous",
+    url: "http://blog.asynchronous.com"
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+  
+  const blogsAtEnd = await helper.blogsInDb();
+  expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
