@@ -218,6 +218,21 @@ describe("Add a new user with invalid data", () => {
   });
 });
 
+describe("Login", () => {
+  test("fails with correct status code and message if username or password does not exist", async () => {
+    const userLogin = {
+      username: "root",
+      password: "sekrett"
+    };
+
+    const result = await api
+      .post("/api/login")
+      .send(userLogin)
+      .expect(401);
+
+    expect(result.body.error).toContain("invalid username or password");
+  });
+});
 
 afterAll(() => {
   mongoose.connection.close();
