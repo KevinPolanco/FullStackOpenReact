@@ -39,80 +39,6 @@ describe("when there is initially some blogs saved", () => {
   });
 });
 
-describe("addition of a new blog", () => {
-  test("succeeds with valid data" , async () => {
-    const newBlog = {
-      title: "the importance of async/await in javascript",
-      author: "Albert Asynchronous",
-      url: "http://blog.asynchronous.com",
-      likes: 60,
-    };
-  
-    await api
-      .post("/api/blogs")
-      .send(newBlog)
-      .expect(201)
-      .expect("Content-Type", /application\/json/);
-  
-    const blogsAtEnd = await helper.blogsInDb();
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
-  
-    const titles = blogsAtEnd.map(r => r.title);
-    expect(titles).toContain(
-      "the importance of async/await in javascript"
-    );
-  });
-
-  test("If the like property does not exist, it will be 0 by default", async () => {
-    const newBlog = {
-      title: "the importance of async/await in javascript",
-      author: "Albert Asynchronous",
-      url: "http://blog.asynchronous.com"
-    };
-  
-    await api
-      .post("/api/blogs")
-      .send(newBlog)
-      .expect(201)
-      .expect("Content-Type", /application\/json/);
-    
-    const blogsAtEnd = await helper.blogsInDb();
-    expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0);
-  });
-
-  test("fails with status code 400 if data invalid", async () => {
-    const newBlog = {
-      author: "Albert Asynchronous"
-    };
-  
-    await api
-      .post("/api/blogs")
-      .send(newBlog)
-      .expect(400);
-  });
-});
-
-describe("deletion of a blog", () => {
-  test("succeeds with status code 204 if id is valid", async () => {
-    const blogsAtStart = await helper.blogsInDb();
-    const blogToDelete = blogsAtStart[0];
-
-    await api
-      .delete(`/api/blogs/${blogToDelete.id}`)
-      .expect(204);
-
-    const blogsAtEnd = await helper.blogsInDb();
-
-    expect(blogsAtEnd).toHaveLength(
-      helper.initialBlogs.length - 1
-    );
-
-    const titles = blogsAtEnd.map(r => r.title);
-
-    expect(titles).not.toContain(blogToDelete.title);
-  });
-});
-
 describe("updating of a blog", () => {
   test("is updated correctly", async () => {
     const blogsAtStart = await helper.blogsInDb();
@@ -233,6 +159,151 @@ describe("Login", () => {
     expect(result.body.error).toContain("invalid username or password");
   });
 });
+
+describe("addition of a new blog", () => {
+  test("succeeds with valid data" , async () => {
+    const userLogin = {
+      username: "root",
+      password: "sekret"
+    };
+    const result = await api
+      .post("/api/login")
+      .send(userLogin);
+    const token = JSON.parse(result.text).token;
+  
+    const newBlog = {
+      title: "the importance of async/await in javascript",
+      author: "Albert Asynchronous",
+      url: "http://blog.asynchronous.com",
+      likes: 60,
+    };
+   
+    await api
+      .post("/api/blogs")
+      .set("Authorization", `bearer ${token}`)
+      .send(newBlog)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+  
+    const blogsAtEnd = await helper.blogsInDb();
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
+  
+    const titles = blogsAtEnd.map(r => r.title);
+    expect(titles).toContain(
+      "the importance of async/await in javascript"
+    );
+  });
+
+  test("If the like property does not exist, it will be 0 by default", async () => {
+    const userLogin = {
+      username: "root",
+      password: "sekret"
+    };
+    const result = await api
+      .post("/api/login")
+      .send(userLogin);
+    const token = JSON.parse(result.text).token;
+
+    const newBlog = {
+      title: "the importance of async/await in javascript",
+      author: "Albert Asynchronous",
+      url: "http://blog.asynchronous.com"
+    };
+  
+    await api
+      .post("/api/blogs")
+      .set("Authorization", `bearer ${token}`)
+      .send(newBlog)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+    
+    const blogsAtEnd = await helper.blogsInDb();
+    expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0);
+  });
+
+  test("fails with status code 400 if data invalid", async () => {
+    const userLogin = {
+      username: "root",
+      password: "sekret"
+    };
+    const result = await api
+      .post("/api/login")
+      .send(userLogin);
+    const token = JSON.parse(result.text).token;
+
+    const newBlog = {
+      author: "Albert Asynchronous"
+    };
+  
+    await api
+      .post("/api/blogs")
+      .set("Authorization", `bearer ${token}`)
+      .send(newBlog)
+      .expect(400);
+  });
+});
+
+describe("deletion of a blog", () => {
+  test("succeeds with status code 204 if id is valid", async () => {
+    const newUser = {
+      username: "newuser",
+      name: "newuser",
+      password: "newuser123",
+    };
+    await api
+      .post("/api/users")
+      .send(newUser);
+ 
+    const userLogin = {
+      username: "newuser",
+      password: "newuser123"
+    };
+    const resultLoginNewUser = await api
+      .post("/api/login")
+      .send(userLogin);
+    const token = JSON.parse(resultLoginNewUser.text).token;
+    
+    const newBlog = {
+      title: "the importance of async/await in javascript",
+      author: "Albert Asynchronous",
+      url: "http://blog.asynchronous.com",
+      likes: 60,
+    };
+    const resultNewBlog = await api
+      .post("/api/blogs")
+      .set("Authorization", `bearer ${token}`)
+      .send(newBlog);
+    const blogId = resultNewBlog._body.id;
+    
+    await api
+      .delete(`/api/blogs/${blogId}`)
+      .set("Authorization", `bearer ${token}`)
+      .expect(204);
+
+    const blogsAtEnd = await helper.blogsInDb();
+    const titles = blogsAtEnd.map(r => r.title);
+    expect(titles).not.toContain(newBlog.title);
+  });
+});
+
+describe("token", () => {
+  test("fails with 401 status code if no token is sent" ,async () => {
+    const newBlog = {
+      title: "the importance of async/await in javascript",
+      author: "Albert Asynchronous",
+      url: "http://blog.asynchronous.com",
+      likes: 60,
+    };
+   
+    await api
+      .post("/api/blogs")
+      .set("Authorization", "bearer")
+      .send(newBlog)
+      .expect(401)
+      .expect("Content-Type", /application\/json/);
+  });
+});
+
 
 afterAll(() => {
   mongoose.connection.close();
