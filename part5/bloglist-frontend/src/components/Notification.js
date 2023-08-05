@@ -1,7 +1,7 @@
 const Notification = ({ message, isError }) => {
   const messageStyle = {
     color: "green",
-    background: "lightgrey",
+    opacity: 1,
     fontSize: 20,
     borderStyle: "solid",
     borderRadius: 5,
@@ -12,7 +12,7 @@ const Notification = ({ message, isError }) => {
 
   const errorStyle = {
     color: "red",
-    background: "lightgrey",
+    opacity: 1,
     fontSize: 20,
     borderStyle: "solid",
     borderRadius: 5,
