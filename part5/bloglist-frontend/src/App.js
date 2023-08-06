@@ -76,6 +76,22 @@ const App = () => {
     }
   };
 
+  const updateLike = async (id) => {
+    try {
+      const blogToUpdate =  blogs.find(blog => blog.id === id) 
+      const blogObject = {
+        likes: blogToUpdate.likes + 1,
+        author: blogToUpdate.author,
+        title: blogToUpdate.title,
+        url: blogToUpdate.url
+      };
+      const returnedBlog = await blogService.update(id, blogObject);
+      setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog ))
+    } catch (exception) {
+      notificationMessage(exception.response.data.error, true)
+    }
+  };
+
   return (
   <div>
     {!user &&
@@ -99,7 +115,8 @@ const App = () => {
           <BlogForm createBlog={addBlog}/>
         </Togglable>
         <Blog 
-          blogs={blogs} 
+          blogs={blogs}
+          updateLike={updateLike}
         />
       </div>
     }  

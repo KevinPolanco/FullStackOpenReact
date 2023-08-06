@@ -502,7 +502,9 @@ button {
   font-size: inherit;
   margin-right: 6px;
   margin-bottom: 6px;
-  padding: 10px;
+  margin-right: 6px;
+  margin-left: 6px;
+  padding: 3px;
   border: none;
   border-radius: 6px;
   outline: none;
