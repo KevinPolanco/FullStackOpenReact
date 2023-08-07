@@ -27,6 +27,8 @@ const Blog = ({blogs, updateLike}) => {
     updateLike(blogId)
   };
 
+  blogs.sort((a, b) => { return a.likes - b.likes})
+
   return (
     <div >
       {blogs.map((blog) => (
