@@ -92,6 +92,19 @@ const App = () => {
     }
   };
 
+  const removeBlog = async (id) => {
+    try {
+      const blog = blogs.find((blog) => blog.id === id);
+      if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)){
+        await blogService.remove(id);
+        notificationMessage(`${blog.title} by ${blog.author} has been deleted`, false);
+        setBlogs(blogs.filter((blog) => blog.id !== id))
+      }
+    } catch (exception) {
+      notificationMessage(exception.response.statusText, true)
+    }
+  }
+
   return (
   <div>
     {!user &&
@@ -117,6 +130,8 @@ const App = () => {
         <Blog 
           blogs={blogs}
           updateLike={updateLike}
+          user={user}
+          removeBlog={removeBlog}
         />
       </div>
     }  

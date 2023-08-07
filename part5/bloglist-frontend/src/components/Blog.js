@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Blog = ({blogs, updateLike}) => {
+const Blog = ({blogs, updateLike, user, removeBlog}) => {
   const [visibleBlogs, setVisibleBlogs] = useState({});
   const [buttonText, setButtonText] = useState({});
 
@@ -11,7 +11,7 @@ const Blog = ({blogs, updateLike}) => {
     boderWidth: 1,
     marginBottom: 5
   };
-
+  
   const handleToggleVisible = (blogId) => {
     setVisibleBlogs((prevVisibleBlogs) => ({
       ...prevVisibleBlogs,
@@ -28,6 +28,22 @@ const Blog = ({blogs, updateLike}) => {
   };
 
   blogs.sort((a, b) => { return a.likes - b.likes})
+  
+  const handleRemoveButton = (blogId) => {
+    removeBlog(blogId)
+  }
+
+  const visibilityRemoveButton = (user, blog) => {
+    if (user.name === blog.user[0].name) {
+      return (
+        <div>
+          <button onClick={() => handleRemoveButton(blog.id)}>
+            remove
+          </button>
+        </div>
+      )
+    }
+  }
 
   return (
     <div >
@@ -55,6 +71,7 @@ const Blog = ({blogs, updateLike}) => {
               <div>
                 {blog.user[0].name}
               </div>
+              {visibilityRemoveButton(user, blog)}
             </div>
           )}
         </div>
