@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = ({blogs, updateLike, user, removeBlog}) => {
-  const [visibleBlogs, setVisibleBlogs] = useState({});
-  const [buttonText, setButtonText] = useState({});
+const Blog = ({ blogs, updateLike, user, removeBlog }) => {
+  const [visibleBlogs, setVisibleBlogs] = useState({})
+  const [buttonText, setButtonText] = useState({})
 
   const blogStyle = {
     padding: 3,
@@ -11,25 +11,25 @@ const Blog = ({blogs, updateLike, user, removeBlog}) => {
     border: 'solid',
     boderWidth: 1,
     marginBottom: 5
-  };
-  
+  }
+
   const handleToggleVisible = (blogId) => {
     setVisibleBlogs((prevVisibleBlogs) => ({
       ...prevVisibleBlogs,
       [blogId]: !prevVisibleBlogs[blogId]
-    }));
+    }))
     setButtonText((prevButtonText) => ({
       ...prevButtonText,
-      [blogId]: prevButtonText[blogId] === "hide" ? "view" : "hide"
-    }));
-  };
+      [blogId]: prevButtonText[blogId] === 'hide' ? 'view' : 'hide'
+    }))
+  }
 
   const handleLike = (blogId) => {
     updateLike(blogId)
-  };
+  }
 
   blogs.sort((a, b) => { return a.likes - b.likes})
-  
+
   const handleRemoveButton = (blogId) => {
     removeBlog(blogId)
   }
@@ -53,7 +53,7 @@ const Blog = ({blogs, updateLike, user, removeBlog}) => {
           <div>
             {blog.title} <i>{blog.author}</i>
             <button onClick={() => handleToggleVisible(blog.id)}>
-            {buttonText[blog.id] || "view"}
+              {buttonText[blog.id] || 'view'}
             </button>
           </div>
           {visibleBlogs[blog.id] && (
@@ -77,8 +77,8 @@ const Blog = ({blogs, updateLike, user, removeBlog}) => {
           )}
         </div>
       ))}
-    </div> 
-  ) 
+    </div>
+  )
 }
 
 Blog.propTypes = {

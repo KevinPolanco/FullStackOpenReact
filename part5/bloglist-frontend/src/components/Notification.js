@@ -2,42 +2,42 @@ import PropTypes from 'prop-types'
 
 const Notification = ({ message, isError }) => {
   const messageStyle = {
-    color: "green",
+    color: 'green',
     opacity: 1,
     fontSize: 20,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderRadius: 5,
-    borderColor: "green",
+    borderColor: 'green',
     padding: 10,
     marginBottom: 10,
-  };
+  }
 
   const errorStyle = {
-    color: "red",
+    color: 'red',
     opacity: 1,
     fontSize: 20,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderRadius: 5,
-    borderColor: "red",
+    borderColor: 'red',
     padding: 10,
     marginBottom: 10,
-  };
+  }
 
   if (message === null) {
-    return null;
+    return null
   } else if (isError) {
     return (
       <div style={errorStyle}>
         {message}
       </div>
-    );
+    )
   } else {
-    return <div style={messageStyle}>{message}</div>;
+    return <div style={messageStyle}>{message}</div>
   }
-};
+}
 
 Notification.propTypes = {
   isError: PropTypes.bool.isRequired
 }
 
-export default Notification;
+export default Notification
