@@ -49,7 +49,7 @@ const Blog = ({ blogs, updateLike, user, removeBlog }) => {
   return (
     <div >
       {blogs.map((blog) => (
-        <div style={blogStyle} key={blog.id}>
+        <div className='blog' style={blogStyle} key={blog.id}>
           <div>
             {blog.title} <i>{blog.author}</i>
             <button onClick={() => handleToggleVisible(blog.id)}>
