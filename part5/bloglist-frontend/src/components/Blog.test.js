@@ -42,7 +42,9 @@ describe('<Blog />', () => {
       'name': 'Matti Lukkainen',
     }
 
-    const { container } = render(<Blog blogs={blog} user={user}/>)
+    const { container } = render(
+      <Blog blogs={blog} user={user} removeBlog={() => {}} updateLike={() => {}}/>
+    )
     const div = container.querySelector('.blog')
     const button = screen.getByText('view')
     await userEvent.click(button)
@@ -72,7 +74,7 @@ describe('<Blog />', () => {
   
     const mockHandler = jest.fn()
   
-    render(<Blog blogs={blog} user={user} updateLike={mockHandler}/>)
+    render(<Blog blogs={blog} user={user} updateLike={mockHandler} removeBlog={() => {}}/>)
   
     const viewButton = screen.getByText('view')
     await userEvent.click(viewButton)
@@ -83,5 +85,5 @@ describe('<Blog />', () => {
   
     expect(mockHandler.mock.calls).toHaveLength(2)
   })
-  
+
 })
