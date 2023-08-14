@@ -1,6 +1,5 @@
 describe('Blog app', function() {
   beforeEach(function() {
-    console.log(Cypress.env('BACKEND'))
     cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
     const user = {
       name: 'John Coltrane',
@@ -38,6 +37,26 @@ describe('Blog app', function() {
       .should('contain', 'Wrong credentials')
       .and('have.css', 'color', 'rgb(255, 0, 0)')
       .and('have.css', 'border-style', 'solid')
+    })
+  })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: 'JCol', password: 'John321' })
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('new blog').click()
+      
+      cy.get('#title-input').type('Goodbye, Clean Code')
+      cy.get('#author-input').type('Dan Abramov')
+      cy.get('#url-input').type('https://overreacted.io/goodbye-clean-code/')
+      cy.get('#create-blog-button').click()
+
+     
+      cy.get('#blog-list')
+      .should('contain', 'Goodbye, Clean Code')
+      .should('contain', 'Dan Abramov')        
     })
   })
 })

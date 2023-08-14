@@ -47,7 +47,7 @@ const Blog = ({ blogs, updateLike, user, removeBlog }) => {
   }
 
   return (
-    <div >
+    <div id='blog-list'>
       {blogs.map((blog) => (
         <div className='blog' style={blogStyle} key={blog.id}>
           <div>
