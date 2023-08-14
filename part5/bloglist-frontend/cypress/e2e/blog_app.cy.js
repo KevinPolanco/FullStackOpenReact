@@ -81,6 +81,18 @@ describe('Blog app', function() {
 
         cy.get('#blog-list').should('not.contain', 'Top 5 preguntas de JavaScript en Stack Overflow')
       })
+
+      it('only the creator can see the delete button', function () {
+        cy.createUser({
+          name: 'Miles Davis', 
+          username: 'miles',
+          password: 'miles99'
+        })
+        cy.login({ username: 'miles', password: 'miles99' })
+        cy.contains('view').click()
+
+        cy.get('#blog-list').should('not.contain', 'remove')
+      })
     })
   })
 })
