@@ -58,5 +58,22 @@ describe('Blog app', function() {
       .should('contain', 'Goodbye, Clean Code')
       .should('contain', 'Dan Abramov')        
     })
+
+    describe('and a blog exists', function() {
+      beforeEach(function() {
+        cy.createBlog({
+            title: 'Top 5 preguntas de JavaScript en Stack Overflow',
+            author: 'Miguel Ángel Durán',
+            url: 'https://midu.dev/top-5-preguntas-javascript-stack-overflow/'
+          })
+      })
+      
+      it('user can use like button', function() {
+        cy.contains('view').click()
+        cy.contains('like').click()
+
+        cy.get('html').should('contain', '1')
+      })
+    })
   })
 })
