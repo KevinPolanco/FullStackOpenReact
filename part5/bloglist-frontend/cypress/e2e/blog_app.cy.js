@@ -93,6 +93,24 @@ describe('Blog app', function() {
 
         cy.get('#blog-list').should('not.contain', 'remove')
       })
+
+      it('The blogs are ordered from highest to lowest according to the number of likes', function() {
+        cy.createBlog({
+          title: 'toReversed, toSpliced, toSorted y with. Nuevos métodos de Array en JavaScript explicados',
+          author: 'Miguel Ángel Durán',
+          url: 'https://midu.dev/to-reversed-to-spliced-to-sorted-with/'
+        })
+        cy.createBlog({
+          title: 'Desactivar reglas de eslint',
+          author: 'Miguel Ángel Durán',
+          url: 'https://midu.dev/desactivar-reglas-eslint/'
+        })
+        cy.get('.blog button').eq(2).click()
+        cy.contains('like').click()
+
+        cy.get('.blog').eq(0).should('contain', 'Desactivar reglas de eslint')
+        cy.get('.blog').eq(0).should('contain', '1')
+      })
     })
   })
 })

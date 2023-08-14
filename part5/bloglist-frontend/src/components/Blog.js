@@ -28,7 +28,7 @@ const Blog = ({ blogs, updateLike, user, removeBlog }) => {
     updateLike(blogId)
   }
 
-  blogs.sort((a, b) => { return a.likes - b.likes})
+  blogs.sort((a, b) => { return b.likes - a.likes})
 
   const handleRemoveButton = (blogId) => {
     removeBlog(blogId)
