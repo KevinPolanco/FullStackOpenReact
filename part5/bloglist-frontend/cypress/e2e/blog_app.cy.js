@@ -74,6 +74,13 @@ describe('Blog app', function() {
 
         cy.get('html').should('contain', '1')
       })
+
+      it('the user who created the blog can delete it', function() {
+        cy.contains('view').click()
+        cy.contains('remove').click()
+
+        cy.get('#blog-list').should('not.contain', 'Top 5 preguntas de JavaScript en Stack Overflow')
+      })
     })
   })
 })
