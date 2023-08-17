@@ -57,9 +57,8 @@ const reducer = (state = initialState, action) => {
       const newAnecdote = asObject(anecdote)
       return [...state, newAnecdote]
     default:
-      break;
+      return state
+    }
   }
-  return state
-}
 
 export default reducer
