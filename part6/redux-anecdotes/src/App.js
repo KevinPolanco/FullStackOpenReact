@@ -27,6 +27,8 @@ const App = () => {
       }
     )
   }
+  
+  anecdotes.sort((a, b) => { return b.votes - a.votes})
 
   return (
     <div>
