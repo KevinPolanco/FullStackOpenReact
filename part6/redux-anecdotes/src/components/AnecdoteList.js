@@ -17,11 +17,11 @@ const AnecdoteList = () => {
   const vote = (id) => {
     dispatch(newVote(id))
   }
-  
-  anecdotes.sort((a, b) => { return b.votes - a.votes})
-  
+
+  const sortedAnecdotes = anecdotes.slice().sort((a, b) => b.votes - a.votes);
+ 
   return (
-    anecdotes.map(anecdote =>
+    sortedAnecdotes.map(anecdote =>
       <div key={anecdote.id}>
         <div>
           {anecdote.content}
