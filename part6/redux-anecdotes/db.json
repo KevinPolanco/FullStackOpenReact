@@ -17,7 +17,7 @@
     },
     {
       "content": "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
-      "votes": 40,
+      "votes": 43,
       "id": 4
     },
     {
@@ -27,7 +27,7 @@
     },
     {
       "content": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
-      "votes": 103,
+      "votes": 146,
       "id": 6
     },
     {
@@ -37,7 +37,7 @@
     },
     {
       "content": "New anecdote 2",
-      "votes": 2,
+      "votes": 4,
       "id": 8
     }
   ]
