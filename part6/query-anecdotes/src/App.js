@@ -7,6 +7,7 @@ const App = () => {
   const handleVote = (anecdote) => {
     console.log('vote')
   }
+  
   const result  = useQuery(
     'anecdotes', getAnecdotes, {retry: false}
   )
