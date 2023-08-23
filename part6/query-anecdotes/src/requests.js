@@ -5,5 +5,8 @@ const baseUrl = 'http://localhost:3001/anecdotes'
 export const getAnecdotes = () =>
   axios.get(baseUrl).then(res => res.data)
 
-export const createAnecdotes = (newNote) =>
-  axios.post(baseUrl, newNote).then(res => res.data)
+export const createAnecdotes = (content) =>
+  axios.post(baseUrl, content).then(res => res.data)
+
+export const updateAnecdotes = (content) =>
+  axios.put(`${baseUrl}/${content.id}`, content).then(res => res.data)

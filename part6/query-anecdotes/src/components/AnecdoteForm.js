@@ -8,8 +8,9 @@ const AnecdoteForm = () => {
     onError: (error) => {
       console.log(error.message)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries('anecdotes')
+    onSuccess: (newAnecdote) => {
+      const anecdotes = queryClient.getQueryData('anecdotes')
+      queryClient.setQueryData('anecdotes', anecdotes.concat(newAnecdote))
     }
   })
 
@@ -20,7 +21,7 @@ const AnecdoteForm = () => {
     event.target.anecdote.value = ''
     newAnecdoteMutation.mutate({content})
     console.log('new anecdote')
-}
+  }
 
   return (
     <div>
