@@ -8,7 +8,8 @@ const AnecdoteForm = () => {
 
   const newAnecdoteMutation = useMutation(createAnecdotes, {
     onError: (error) => {
-      console.log(error.message)
+      const errorData = error.response.data.error
+      dispatch({type: 'ADD', payload: `${errorData}`})
     },
     onSuccess: (newAnecdote) => {
       const anecdotes = queryClient.getQueryData('anecdotes')
