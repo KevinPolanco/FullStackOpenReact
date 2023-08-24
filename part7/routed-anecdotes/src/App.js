@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import {
-  Routes, Route, Link, useParams, useMatch
+  Routes, Route, Link, useParams, useMatch, useNavigate
 } from "react-router-dom"
 
-const Menu = () => {
+const Menu = ({notification}) => {
   const padding = {
     paddingRight: 5
   }
@@ -12,6 +12,10 @@ const Menu = () => {
       <Link style={padding} to={'/'}>anecdotes</Link>
       <Link style={padding} to={'/create'}>create new</Link>
       <Link style={padding} to={'/about'}>about</Link>
+      {notification
+        ? <div><br />{notification}</div> 
+        : null
+      }
     </div>
   )
 }
@@ -51,20 +55,26 @@ const Footer = () => (
   </div>
 )
 
-const CreateNew = (props) => {
+const CreateNew = ({addNew, setNotification}) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.addNew({
+    addNew({
       content,
       author,
       info,
       votes: 0
     })
+    navigate('/')
+    setNotification(`a new anecdote ${content}`)
+    setTimeout(() => {
+      setNotification('')
+    }, 5000);
   }
 
   return (
@@ -94,7 +104,7 @@ const Anecdote = ({ anecdote }) => {
   const style = {
     marginBottom: 20
   }
-  
+
   return (
     <div style={style}>
       <h2>{anecdote.content}</h2>
@@ -152,12 +162,12 @@ const App = () => {
     <>
       <div>
       <h1>Software anecdotes</h1>
-      <Menu />
+      <Menu notification={notification}/>
       <Routes>
         <Route path='/' element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route path='/anecdotes/:id' element={<Anecdote anecdote={anecdote} />} />
         <Route path='/about' element={<About />} />
-        <Route path='/create' element={<CreateNew addNew={addNew} />}/>
+        <Route path='/create' element={<CreateNew addNew={addNew} setNotification={setNotification}/>}/>
       </Routes>
       </div>
       <Footer />
