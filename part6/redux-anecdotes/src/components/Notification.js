@@ -11,7 +11,6 @@ const Notification = () => {
   }
 
   if (notification) {
-    console.log("soy el componente", notification)
     return (
       <div style={style}>
         {notification}
