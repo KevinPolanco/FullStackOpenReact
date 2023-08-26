@@ -57,8 +57,6 @@ const Footer = () => (
 )
 
 const CreateNew = ({addNew, setNotification}) => {
-  // const [content, setContent] = useState('')
-  // const [author, setAuthor] = useState('')
   const content = useField('text')
   const author = useField('text')
   const info =useField('url')
@@ -80,6 +78,12 @@ const CreateNew = ({addNew, setNotification}) => {
     }, 5000);
   }
 
+  const resetFields = () => {
+    content.reset();
+    author.reset();
+    info.reset();
+  };
+ 
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -97,6 +101,7 @@ const CreateNew = ({addNew, setNotification}) => {
           <input {...info} />
         </div>
         <button>create</button>
+        <button type="button" onClick={() => resetFields()}>reset</button>
       </form>
     </div>
   )
