@@ -79,10 +79,10 @@ const CreateNew = ({addNew, setNotification}) => {
   }
 
   const resetFields = () => {
-    content.reset();
-    author.reset();
-    info.reset();
-  };
+    content.reset()
+    author.reset()
+    info.reset()
+  }
  
   return (
     <div>
@@ -90,18 +90,18 @@ const CreateNew = ({addNew, setNotification}) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...content.attributes} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...author.attributes} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...info.attributes} />
         </div>
         <button>create</button>
-        <button type="button" onClick={() => resetFields()}>reset</button>
+        <button type="button" onClick={resetFields}>reset</button>
       </form>
     </div>
   )
